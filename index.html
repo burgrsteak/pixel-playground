@@ -1,39 +1,111 @@
 <!DOCTYPE html>
 <html lang="en" data-page="home">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Northbound Supply — Outerwear, bags &amp; footwear</title>
-  <link rel="stylesheet" href="assets/css/store.css">
-  <script src="assets/js/store.js"></script>
-  <script src="assets/js/pixel.js"></script>
-  <script src="assets/js/gtm.js"></script>
-  <script src="assets/js/codegen.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltcore — GPUs, peripherals and build parts</title>
+<link rel="stylesheet" href="assets/css/store.css">
+
+<!-- =====================================================================
+     LOAD ORDER MATTERS. Do not reorder these.
+
+     1. store.js    state, routing and the event plan. Builds SPX_BOOT,
+                    which everything below reads.
+     2. pixel.js    debug bus, validator and the five network interceptors.
+                    MUST load before scevent.min.js, or the first PAGE_VIEW
+                    beacon leaves before anything is watching it.
+     3. gtm.js      installs the GTM container when mode is gtm or both.
+                    High in <head> because that is where the real snippet
+                    goes, and tag timing depends on it.
+     4. guides.js   per-event placement rules, shared by console + codegen.
+     5. codegen.js  turns what fired into copy-paste implementation code.
+     6. usercode.js runs YOUR editor code. Loaded here so a beforeFire hook
+                    is registered before the page fires anything.
+     ================================================================== -->
+<script src="assets/js/store.js"></script>
+<script src="assets/js/pixel.js"></script>
+<script src="assets/js/gtm.js"></script>
+<script src="assets/js/guides.js"></script>
+<script src="assets/js/codegen.js"></script>
+<script src="assets/js/usercode.js"></script>
 </head>
 <body>
+
 <main class="wrap">
+
+  <!-- ===================================================================
+       HOME PAGE — fires PAGE_VIEW only.
+
+       PAGE_VIEW belongs on EVERY page, immediately after snaptr('init').
+       If it only fires on the home page your retargeting audiences silently
+       collapse to home-page visitors, which is the most common reason an
+       advertiser reports "my audience stopped growing".
+
+       There is deliberately nothing pixel-related rendered on this page.
+       A real storefront does not show its own instrumentation, so all the
+       diagnostics live in the console docked bottom-right.
+       ================================================================ -->
+
   <section class="hero">
-    <p class="eyebrow">Autumn collection</p>
-    <h1>Built for the long way round.</h1>
-    <p class="hero-sub">Hard-wearing outerwear, bags and footwear for people who take the scenic route.</p>
-    <div class="hero-cta">
-      <a class="btn primary" href="collection.html">Shop all products</a>
-      <a class="btn" href="signup.html">Create an account</a>
+    <div class="hero-t">
+      <p class="eyebrow">New · Surge series</p>
+      <h1>Frame rates<br>you can feel.</h1>
+      <p class="hero-sub">GPUs, boards, peripherals and chairs for people who
+         measure their setup in milliseconds.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="collection.html">Shop all parts</a>
+        <a class="btn ghost" href="signup.html">Create an account</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>360Hz</strong><span>OLED panels</span></div>
+        <div><strong>8K</strong><span>polling rate</span></div>
+        <div><strong>0.03ms</strong><span>response</span></div>
+      </div>
     </div>
+    <div class="hero-art"><span>◩</span></div>
   </section>
+
   <section class="usp">
-    <div><strong>Free shipping</strong><span>On orders over 100</span></div>
-    <div><strong>30-day returns</strong><span>No questions asked</span></div>
-    <div><strong>Repairs for life</strong><span>On every jacket</span></div>
+    <div><strong>Free next-day</strong><span>On orders over 250</span></div>
+    <div><strong>30-day returns</strong><span>No restocking fee</span></div>
+    <div><strong>3-year warranty</strong><span>On every component</span></div>
+    <div><strong>Build support</strong><span>Free compatibility check</span></div>
   </section>
+
   <section class="feat">
     <div class="feat-head">
-      <h2 class="ph">Featured</h2>
+      <h2 class="ph">Featured build parts</h2>
       <a class="feat-all" href="collection.html">View all &rarr;</a>
     </div>
+    <!-- Clicking any card is a real navigation to product.html, which is what
+         makes the Snap Pixel Helper count events per page instead of batching
+         them all into one document lifetime. -->
     <div class="grid" id="spx-home-grid"></div>
   </section>
+
+  <section class="feat">
+    <div class="feat-head">
+      <h2 class="ph">Peripherals &amp; desk</h2>
+      <a class="feat-all" href="collection.html">View all &rarr;</a>
+    </div>
+    <div class="grid" id="spx-deal-grid"></div>
+  </section>
+
 </main>
+
+<footer class="shop-foot">
+  <div class="foot-in">
+    <span class="logo">VOLT<span>CORE</span></span>
+    <p>A fake storefront for testing Snap Pixel implementations. No products are real and no orders are placed.</p>
+    <p class="foot-links">
+      <a href="https://businesshelp.snapchat.com/s/article/pixel-website-install" target="_blank" rel="noopener">Snap Pixel documentation</a>
+    </p>
+  </div>
+</footer>
+
+<!-- console.js and terms.js only define markup + behaviour; shell.js mounts
+     them and releases the event plan once the terms gate is acknowledged.
+     The page module runs last, so the DOM it needs already exists. -->
 <script src="assets/js/console.js"></script>
 <script src="assets/js/terms.js"></script>
 <script src="assets/js/shell.js"></script>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-page="collection">
+<html lang="en" data-page="search">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All parts — Voltcore</title>
+<title>Search — Voltcore</title>
 <link rel="stylesheet" href="assets/css/store.css">
 
 <!-- =====================================================================
@@ -34,32 +34,21 @@
 <main class="wrap">
 
   <!-- ===================================================================
-       COLLECTION PAGE — fires PAGE_VIEW then LIST_VIEW.
+       SEARCH PAGE — fires PAGE_VIEW, then SEARCH when there is a query.
 
-       LIST_VIEW  required: item_ids
-                  optional: item_category, number_items, price, currency
+       SEARCH  required: search_string
+               optional: item_ids, number_items
 
-       item_ids must be the SKUs actually rendered on THIS page, as an array,
-       in render order. Two mistakes to watch for:
+       Fire ONCE when results render. The classic mistake is wiring it to a
+       type-ahead input event, which produces one event per keystroke and
+       makes the event count meaningless.
 
-         1. Sending the whole catalog instead of the visible page. On a
-            paginated collection that inflates every list view.
-         2. Sending a comma-joined string instead of an array. It often
-            "works" but will not match a product catalog cleanly, and
-            Dynamic Ads then shows nothing.
-
-       The IDs have to match your catalog IDs exactly, including case and
-       any prefix your feed adds.
+       search_string is accepted and stored, but is NOT a reportable column
+       in Events Manager. You will see how many searches happened, not what
+       people searched for.
        ================================================================ -->
 
-  <div class="coll-head">
-    <div>
-      <h1 class="ph">All parts</h1>
-      <p class="sub" id="spx-grid-count"></p>
-    </div>
-    <p class="tiny">This load fired <code>LIST_VIEW</code> with every visible SKU.</p>
-  </div>
-  <div class="grid" id="spx-grid"></div>
+  <div id="spx-search"></div>
 </main>
 
 <footer class="shop-foot">
@@ -78,6 +67,6 @@
 <script src="assets/js/console.js"></script>
 <script src="assets/js/terms.js"></script>
 <script src="assets/js/shell.js"></script>
-<script src="assets/js/page-collection.js"></script>
+<script src="assets/js/page-search.js"></script>
 </body>
 </html>
