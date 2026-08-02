@@ -5,23 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Voltcore — GPUs, peripherals and build parts</title>
 <link rel="stylesheet" href="assets/css/store.css">
-
-<!-- =====================================================================
-     LOAD ORDER MATTERS. Do not reorder these.
-
-     1. store.js    state, routing and the event plan. Builds SPX_BOOT,
-                    which everything below reads.
-     2. pixel.js    debug bus, validator and the five network interceptors.
-                    MUST load before scevent.min.js, or the first PAGE_VIEW
-                    beacon leaves before anything is watching it.
-     3. gtm.js      installs the GTM container when mode is gtm or both.
-                    High in <head> because that is where the real snippet
-                    goes, and tag timing depends on it.
-     4. guides.js   per-event placement rules, shared by console + codegen.
-     5. codegen.js  turns what fired into copy-paste implementation code.
-     6. usercode.js runs YOUR editor code. Loaded here so a beforeFire hook
-                    is registered before the page fires anything.
-     ================================================================== -->
 <script src="assets/js/store.js"></script>
 <script src="assets/js/pixel.js"></script>
 <script src="assets/js/gtm.js"></script>
@@ -32,19 +15,6 @@
 <body>
 
 <main class="wrap">
-
-  <!-- ===================================================================
-       HOME PAGE — fires PAGE_VIEW only.
-
-       PAGE_VIEW belongs on EVERY page, immediately after snaptr('init').
-       If it only fires on the home page your retargeting audiences silently
-       collapse to home-page visitors, which is the most common reason an
-       advertiser reports "my audience stopped growing".
-
-       There is deliberately nothing pixel-related rendered on this page.
-       A real storefront does not show its own instrumentation, so all the
-       diagnostics live in the console docked bottom-right.
-       ================================================================ -->
 
   <section class="hero">
     <div class="hero-t">
@@ -62,7 +32,7 @@
         <div><strong>0.03ms</strong><span>response</span></div>
       </div>
     </div>
-    <div class="hero-art"><span>◩</span></div>
+    <div class="hero-art"><span>&#9633;</span></div>
   </section>
 
   <section class="usp">
@@ -77,9 +47,6 @@
       <h2 class="ph">Featured build parts</h2>
       <a class="feat-all" href="collection.html">View all &rarr;</a>
     </div>
-    <!-- Clicking any card is a real navigation to product.html, which is what
-         makes the Snap Pixel Helper count events per page instead of batching
-         them all into one document lifetime. -->
     <div class="grid" id="spx-home-grid"></div>
   </section>
 
@@ -103,10 +70,8 @@
   </div>
 </footer>
 
-<!-- console.js and terms.js only define markup + behaviour; shell.js mounts
-     them and releases the event plan once the terms gate is acknowledged.
-     The page module runs last, so the DOM it needs already exists. -->
 <script src="assets/js/console.js"></script>
+<script src="assets/js/setup.js"></script>
 <script src="assets/js/terms.js"></script>
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/page-home.js"></script>

@@ -30,6 +30,12 @@ a { color: inherit; text-decoration: none; }
 .hero-sub { font-size: 1.05rem; color: #555; margin-bottom: 1.75rem; }
 .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
 
+/* Hero stats */
+.hero-stats { display:flex; gap:2rem; margin-top:1.5rem; flex-wrap:wrap; }
+.hero-stats div { display:flex; flex-direction:column; gap:.2rem; }
+.hero-stats strong { font-size:1.1rem; font-weight:800; }
+.hero-stats span { font-size:.78rem; color:#888; }
+
 /* USP */
 .usp { display: flex; gap: 2rem; flex-wrap: wrap; padding: 1.5rem 0; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0; margin: 1.5rem 0; }
 .usp div { display: flex; flex-direction: column; gap: .2rem; }
@@ -100,14 +106,122 @@ a { color: inherit; text-decoration: none; }
 .spx-network-url { color: #7ec8e3; word-break: break-all; }
 .spx-history-row { padding: .2rem 0; border-bottom: 1px solid #2a2a2a; color: #aaa; }
 
-/* Setup form in console */
-.spx-setup-form label { display: block; margin-bottom: .2rem; color: #aaa; }
-.spx-setup-form input, .spx-setup-form select { width: 100%; padding: .3rem .5rem; background: #2a2a2a; border: 1px solid #444; color: #e8e8e8; border-radius: 4px; font-size: .78rem; margin-bottom: .6rem; }
-.spx-setup-form .btn { font-size: .78rem; padding: .3rem .8rem; margin-top: .3rem; }
+/* ── Setup tab ─────────────────────────────────────────────────────── */
+.spx-setup-wrap { padding-bottom: .5rem; }
+
+.spx-setup-section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: .55rem .75rem .3rem;
+  border-bottom: 1px solid #2a2a2a;
+  margin-bottom: .4rem;
+}
+.spx-setup-section-head strong { color: #f0c040; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
+.spx-setup-section-sub { color: #555; font-size: .68rem; }
+
+.spx-setup-row {
+  padding: .2rem .75rem .4rem;
+}
+.spx-setup-row label {
+  display: block;
+  color: #aaa;
+  font-size: .72rem;
+  margin-bottom: .2rem;
+}
+.spx-setup-row input[type="text"],
+.spx-setup-row select {
+  width: 100%;
+  padding: .3rem .5rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #e8e8e8;
+  border-radius: 4px;
+  font-size: .78rem;
+  font-family: monospace;
+}
+.spx-setup-row input[type="text"]:focus,
+.spx-setup-row select:focus {
+  outline: none;
+  border-color: #f0c040;
+}
+
+.spx-setup-check {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .2rem .75rem;
+  color: #aaa;
+  font-size: .72rem;
+  cursor: pointer;
+}
+.spx-setup-check input[type="checkbox"] {
+  accent-color: #f0c040;
+  width: 13px; height: 13px;
+  cursor: pointer;
+}
+
+.spx-setup-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem .75rem .2rem;
+}
+.spx-setup-actions .btn { font-size: .75rem; padding: .3rem .9rem; border-radius: 4px; }
+.spx-setup-reset-btn {
+  background: none;
+  border: none;
+  color: #f06060;
+  font-size: .72rem;
+  cursor: pointer;
+  font-family: monospace;
+  text-decoration: underline;
+  padding: 0;
+}
+.spx-setup-reset-btn:hover { color: #ff8080; }
+
+.spx-setup-status {
+  min-height: 1.2rem;
+  padding: .15rem .75rem .35rem;
+  font-size: .72rem;
+}
+
+/* Generated snippet */
+.spx-snippet-wrap {
+  position: relative;
+  margin: 0 .75rem .5rem;
+}
+.spx-snippet {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: .5rem .75rem;
+  font-size: .68rem;
+  line-height: 1.55;
+  white-space: pre;
+  overflow-x: auto;
+  color: #7ec8e3;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.spx-snippet-copy {
+  position: absolute;
+  top: .35rem; right: .35rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #aaa;
+  font-size: .68rem;
+  padding: .15rem .5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: monospace;
+  z-index: 1;
+}
+.spx-snippet-copy:hover { color: #f0c040; border-color: #f0c040; }
+
+/* ── Shared badges ─────────────────────────────────────────────────── */
 .spx-badge { display: inline-block; padding: .1rem .45rem; border-radius: 999px; font-size: .68rem; font-weight: 700; margin-left: .3rem; }
-.spx-badge.ok { background: #1a4a1a; color: #6fcf6f; }
+.spx-badge.ok   { background: #1a4a1a; color: #6fcf6f; }
 .spx-badge.warn { background: #4a3a00; color: #f0c040; }
-.spx-badge.err { background: #4a1a1a; color: #f06060; }
+.spx-badge.err  { background: #4a1a1a; color: #f06060; }
 
 /* Terms overlay */
 #spx-terms-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 10000; display: flex; align-items: center; justify-content: center; }

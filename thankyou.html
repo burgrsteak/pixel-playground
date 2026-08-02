@@ -3,25 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Order confirmed — Voltcore</title>
+<title>Thank You — Voltcore</title>
 <link rel="stylesheet" href="assets/css/store.css">
-
-<!-- =====================================================================
-     LOAD ORDER MATTERS. Do not reorder these.
-
-     1. store.js    state, routing and the event plan. Builds SPX_BOOT,
-                    which everything below reads.
-     2. pixel.js    debug bus, validator and the five network interceptors.
-                    MUST load before scevent.min.js, or the first PAGE_VIEW
-                    beacon leaves before anything is watching it.
-     3. gtm.js      installs the GTM container when mode is gtm or both.
-                    High in <head> because that is where the real snippet
-                    goes, and tag timing depends on it.
-     4. guides.js   per-event placement rules, shared by console + codegen.
-     5. codegen.js  turns what fired into copy-paste implementation code.
-     6. usercode.js runs YOUR editor code. Loaded here so a beforeFire hook
-                    is registered before the page fires anything.
-     ================================================================== -->
 <script src="assets/js/store.js"></script>
 <script src="assets/js/pixel.js"></script>
 <script src="assets/js/gtm.js"></script>
@@ -30,47 +13,9 @@
 <script src="assets/js/usercode.js"></script>
 </head>
 <body>
-
-<main class="wrap">
-
-  <!-- ===================================================================
-       ORDER CONFIRMATION — fires PAGE_VIEW then PURCHASE.
-
-       PURCHASE  required: price, currency, transaction_id
-                 optional: item_ids, number_items, description
-
-       Everything in ROAS reporting depends on this event being exactly right,
-       so it is worth being pedantic about three things:
-
-         1. price is the order total in MAJOR units. Shopify and most carts
-            store money in cents. Sending cents reports a $1.89 order as
-            $189 — a 100x over-report.
-         2. currency is a 3-letter ISO 4217 code.
-         3. transaction_id is your order ID, and it is what lets Snap
-            deduplicate. Refreshing a confirmation page re-fires PURCHASE;
-            without transaction_id every refresh is counted as new revenue.
-
-       The Refresh button below reproduces exactly that. Watch the duplicate
-       counter climb in the console while transaction_id stays the same.
-       ================================================================ -->
-
-  <section class="ty" id="spx-ty"></section>
-</main>
-
-<footer class="shop-foot">
-  <div class="foot-in">
-    <span class="logo">VOLT<span>CORE</span></span>
-    <p>A fake storefront for testing Snap Pixel implementations. No products are real and no orders are placed.</p>
-    <p class="foot-links">
-      <a href="https://businesshelp.snapchat.com/s/article/pixel-website-install" target="_blank" rel="noopener">Snap Pixel documentation</a>
-    </p>
-  </div>
-</footer>
-
-<!-- console.js and terms.js only define markup + behaviour; shell.js mounts
-     them and releases the event plan once the terms gate is acknowledged.
-     The page module runs last, so the DOM it needs already exists. -->
+<main class="wrap" id="spx-thankyou-main"></main>
 <script src="assets/js/console.js"></script>
+<script src="assets/js/setup.js"></script>
 <script src="assets/js/terms.js"></script>
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/page-thankyou.js"></script>

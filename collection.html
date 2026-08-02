@@ -3,25 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All parts — Voltcore</title>
+<title>Shop All — Voltcore</title>
 <link rel="stylesheet" href="assets/css/store.css">
-
-<!-- =====================================================================
-     LOAD ORDER MATTERS. Do not reorder these.
-
-     1. store.js    state, routing and the event plan. Builds SPX_BOOT,
-                    which everything below reads.
-     2. pixel.js    debug bus, validator and the five network interceptors.
-                    MUST load before scevent.min.js, or the first PAGE_VIEW
-                    beacon leaves before anything is watching it.
-     3. gtm.js      installs the GTM container when mode is gtm or both.
-                    High in <head> because that is where the real snippet
-                    goes, and tag timing depends on it.
-     4. guides.js   per-event placement rules, shared by console + codegen.
-     5. codegen.js  turns what fired into copy-paste implementation code.
-     6. usercode.js runs YOUR editor code. Loaded here so a beforeFire hook
-                    is registered before the page fires anything.
-     ================================================================== -->
 <script src="assets/js/store.js"></script>
 <script src="assets/js/pixel.js"></script>
 <script src="assets/js/gtm.js"></script>
@@ -30,52 +13,12 @@
 <script src="assets/js/usercode.js"></script>
 </head>
 <body>
-
 <main class="wrap">
-
-  <!-- ===================================================================
-       COLLECTION PAGE — fires PAGE_VIEW then LIST_VIEW.
-
-       LIST_VIEW  required: item_ids
-                  optional: item_category, number_items, price, currency
-
-       item_ids must be the SKUs actually rendered on THIS page, as an array,
-       in render order. Two mistakes to watch for:
-
-         1. Sending the whole catalog instead of the visible page. On a
-            paginated collection that inflates every list view.
-         2. Sending a comma-joined string instead of an array. It often
-            "works" but will not match a product catalog cleanly, and
-            Dynamic Ads then shows nothing.
-
-       The IDs have to match your catalog IDs exactly, including case and
-       any prefix your feed adds.
-       ================================================================ -->
-
-  <div class="coll-head">
-    <div>
-      <h1 class="ph">All parts</h1>
-      <p class="sub" id="spx-grid-count"></p>
-    </div>
-    <p class="tiny">This load fired <code>LIST_VIEW</code> with every visible SKU.</p>
-  </div>
-  <div class="grid" id="spx-grid"></div>
+  <h1 class="ph">Shop All Parts</h1>
+  <div class="grid" id="spx-collection-grid"></div>
 </main>
-
-<footer class="shop-foot">
-  <div class="foot-in">
-    <span class="logo">VOLT<span>CORE</span></span>
-    <p>A fake storefront for testing Snap Pixel implementations. No products are real and no orders are placed.</p>
-    <p class="foot-links">
-      <a href="https://businesshelp.snapchat.com/s/article/pixel-website-install" target="_blank" rel="noopener">Snap Pixel documentation</a>
-    </p>
-  </div>
-</footer>
-
-<!-- console.js and terms.js only define markup + behaviour; shell.js mounts
-     them and releases the event plan once the terms gate is acknowledged.
-     The page module runs last, so the DOM it needs already exists. -->
 <script src="assets/js/console.js"></script>
+<script src="assets/js/setup.js"></script>
 <script src="assets/js/terms.js"></script>
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/page-collection.js"></script>

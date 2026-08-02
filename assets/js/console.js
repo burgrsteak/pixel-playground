@@ -1,4 +1,7 @@
-/* Snap Pixel Playground — debug console panel */
+/* Snap Pixel Playground — debug console panel
+
+   Setup tab is now owned entirely by SPXSetup (setup.js).
+   console.js delegates render + binding to SPXSetup.render(). */
 
 var SPX_CONSOLE_HTML = [
   '<div id="spx-console">',
@@ -27,62 +30,6 @@ var SPXConsole = (function () {
 
   function $(id) { return document.getElementById(id); }
 
-  function renderSetup() {
-    var cfg = SPX_BOOT.config;
-    var f = document.createElement('form');
-    f.className = 'spx-setup-form';
-    f.action = window.location.pathname;
-    f.method = 'get';
-    f.innerHTML = [
-      hiddenInput('action', 'saveconfig'),
-      hiddenInput('page', SPX_BOOT.page),
-      SPX_BOOT.sku ? hiddenInput('sku', SPX_BOOT.sku) : '',
-      field('Pixel ID', 'pixelId', cfg.pixelId, 'text', 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'),
-      field('Mode', 'mode', cfg.mode, 'select', '', ['manual','gtm','both']),
-      (cfg.mode !== 'manual' ? field('GTM Container ID', 'gtmId', cfg.gtmId, 'text', 'GTM-XXXXXX') : ''),
-      (cfg.mode !== 'manual' ? field('dataLayer name', 'dataLayerName', cfg.dataLayerName, 'text', 'dataLayer') : ''),
-      field('Currency', 'currency', cfg.currency, 'text', 'USD'),
-      field('Hashed Email', 'hashedEmail', cfg.hashedEmail, 'text', 'sha256 hex'),
-      field('Hashed Phone', 'hashedPhone', cfg.hashedPhone, 'text', 'sha256 hex'),
-      field('External ID', 'externalId', cfg.externalId, 'text', 'your user ID'),
-      checkbox('Virtual URL', 'virtualUrl', cfg.virtualUrl),
-      checkbox('Auto-fire plan', 'autoFire', cfg.autoFire),
-      checkbox('Client dedup', 'clientDedup', cfg.clientDedup),
-      '<button type="submit" class="btn primary">Apply</button>',
-      ' <a href="index.html?action=reset" style="color:#f06060;font-size:.78rem;margin-left:.5rem">Reset all</a>'
-    ].join('');
-    var panel = $('spx-panel-setup');
-    if (panel) { panel.innerHTML = ''; panel.appendChild(f); }
-  }
-
-  function hiddenInput(name, value) {
-    return '<input type="hidden" name="' + name + '" value="' + escAttr(value) + '">';
-  }
-
-  function field(label, name, value, type, placeholder, options) {
-    var html = '<label>' + label + '</label>';
-    if (type === 'select') {
-      html += '<select name="' + name + '">';
-      (options || []).forEach(function(o){
-        html += '<option value="' + o + '"' + (o === value ? ' selected' : '') + '>' + o + '</option>';
-      });
-      html += '</select>';
-    } else {
-      html += '<input type="text" name="' + name + '" value="' + escAttr(value || '') + '" placeholder="' + escAttr(placeholder || '') + '">';
-    }
-    return html;
-  }
-
-  function checkbox(label, name, checked) {
-    return '<label style="display:flex;gap:.4rem;align-items:center;margin-bottom:.5rem">'
-      + '<input type="checkbox" name="' + name + '" value="on"' + (checked ? ' checked' : '') + '>'
-      + label + '</label>';
-  }
-
-  function escAttr(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-  }
-
   function renderHistory() {
     var h = SPX_BOOT.history, panel = $('spx-panel-history');
     if (!panel) return;
@@ -100,8 +47,8 @@ var SPXConsole = (function () {
 
   return {
     init: function () {
-      var toggle = $('spx-console-toggle');
-      var body   = $('spx-console-body');
+      var toggle  = $('spx-console-toggle');
+      var body    = $('spx-console-body');
       var chevron = $('spx-console-chevron');
       if (!toggle) return;
 
@@ -119,7 +66,8 @@ var SPXConsole = (function () {
         });
       });
 
-      renderSetup();
+      /* Delegate Setup tab to SPXSetup */
+      SPXSetup.render();
       renderHistory();
       SPXCodegen.renderPage($('spx-panel-code'));
 
@@ -135,9 +83,9 @@ var SPXConsole = (function () {
     openTab: function (name) {
       document.querySelectorAll('.spx-tab').forEach(function(t){ t.classList.remove('active'); });
       document.querySelectorAll('.spx-panel').forEach(function(p){ p.classList.remove('active'); });
-      var tab = document.querySelector('[data-tab="' + name + '"]');
+      var tab   = document.querySelector('[data-tab="' + name + '"]');
       var panel = $('spx-panel-' + name);
-      if (tab) tab.classList.add('active');
+      if (tab)   tab.classList.add('active');
       if (panel) panel.classList.add('active');
     },
 

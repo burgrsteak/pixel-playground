@@ -108,9 +108,9 @@ function SPX_applyAction(s, p) {
       var m = String(p.mode);
       c.mode = (m === 'gtm' || m === 'both') ? m : 'manual';
     }
-    c.virtualUrl  = (p.virtualUrl  === 'on' || p.virtualUrl  === 'true');
-    c.autoFire    = (p.autoFire    === 'on' || p.autoFire    === 'true');
-    c.clientDedup = (p.clientDedup === 'on' || p.clientDedup === 'true');
+    c.virtualUrl  = (p.virtualUrl  === 'on' || p.virtualUrl  === 'true' || p.virtualUrl  === true);
+    c.autoFire    = (p.autoFire    === 'on' || p.autoFire    === 'true' || p.autoFire    === true);
+    c.clientDedup = (p.clientDedup === 'on' || p.clientDedup === 'true' || p.clientDedup === true);
     return { redirect: true, page: p.page || 'home', sku: p.sku || '', open: p.open || 'setup' };
   }
 
@@ -290,14 +290,46 @@ var SPX_BOOT = (function () {
   s.history.push({ t: new Date().getTime(), page: page, events: plan.map(function(x){ return x.event; }) });
   SPX_save(s);
 
-  return {
+  var boot = {
     halted: false, page: page, sku: p.sku || '', config: s.config, plan: plan,
     cart: s.cart, cartCount: SPX_cartCount(s.cart), cartTotal: SPX_cartTotal(s.cart),
     catalog: SPX_CATALOG, history: s.history, lastOrder: s.lastOrder || null,
     account: s.account || null, virtualPath: SPX_virtualPath(page, p),
     openTab: p.open || '', replayWarning: !!p.added,
-    showTerms: s.termsAckDate !== SPX_todayKey(), today: SPX_todayKey()
+    showTerms: s.termsAckDate !== SPX_todayKey(), today: SPX_todayKey(),
+
+    /* Live-patch config in-memory + persist to localStorage.
+       Accepts a plain object with any subset of SPX_DEFAULTS keys.
+       Booleans are accepted directly (no 'on'/'true' coercion needed here). */
+    configure: function (patch) {
+      var c = this.config;
+      var bools = { virtualUrl:1, autoFire:1, clientDedup:1 };
+      for (var k in patch) {
+        if (!Object.prototype.hasOwnProperty.call(patch, k)) continue;
+        if (Object.prototype.hasOwnProperty.call(SPX_DEFAULTS, k)) {
+          if (bools[k]) {
+            c[k] = !!patch[k];
+          } else if (k === 'mode') {
+            var mv = String(patch[k]);
+            c[k] = (mv === 'gtm' || mv === 'both') ? mv : 'manual';
+          } else if (k === 'gtmId') {
+            c[k] = String(patch[k] || '').trim().toUpperCase();
+          } else if (k === 'currency') {
+            c[k] = String(patch[k] || '').trim().toUpperCase() || 'USD';
+          } else {
+            c[k] = String(patch[k] || '').trim();
+          }
+        }
+      }
+      /* Persist */
+      var sess = SPX_load();
+      sess.config = c;
+      SPX_save(sess);
+      return c;
+    }
   };
+
+  return boot;
 })();
 
 function SPX_ackTermsToday() {
